@@ -8,37 +8,24 @@
 
 import SwiftUI
 
-extension View {
-    
-    func emptyStateItems<EmptyStateItems>(@ViewBuilder items: () -> EmptyStateItems) -> some View where EmptyStateItems : View {
-        return EnvironmentReaderView<Self, EmptyStateContentsKey>(content: self, modifier: .init(value: EmptyStatePreference(view: AnyView(items()))))
-    }
-    
-}
-
-struct EmptyStateView<Content> : View where Content : View {
+public struct EmptyStateView<Content, EmptyContent> : View where Content : View, EmptyContent : View {
     
     private var content: Content
     
+    private var emptyContent: EmptyContent
+    
     @Binding
     private var empty: Bool
-        
-    init(empty: Binding<Bool>, @ViewBuilder content: () -> Content) {
+            
+    init(empty: Binding<Bool>, @ViewBuilder content: () -> Content, @ViewBuilder emptyContent: () -> EmptyContent) {
         self.content = content()
+        self.emptyContent = emptyContent()
         self._empty = empty
     }
     
-    var body: some View {
+    public var body: some View {
         if empty {
-            return content.emptyStateItems {
-                VStack {
-                    Text("Image")
-                    Spacer()
-                    Text("Title")
-                    Spacer()
-                    Text("Description")
-                }
-            }.eraseToAnyView()
+            return emptyContent.eraseToAnyView()
         } else {
             return content.eraseToAnyView()
         }

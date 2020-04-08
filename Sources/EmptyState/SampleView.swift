@@ -13,18 +13,15 @@ struct SampleView : View {
     var empty: Bool = true
     
     var body: some View {
-        EmptyStateView(empty: self.$empty) {
-            Text("")
-                .emptyStateItems {
-                    VStack {
-                        Text("Image")
-                        Spacer()
-                        Text("Title")
-                        Spacer()
-                        Text("Description")
-                    }
+        EmptyStateView(empty: self.$empty, content: {
+            Text("Hello!")
+        }, emptyContent: {
+            VStack(spacing: 30) {
+                Image(systemName: "plus")
+                Text("Title")
+                Text("Description")
             }
-        }
+        })
     }
     
 }
