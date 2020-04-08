@@ -8,10 +8,30 @@
 
 import SwiftUI
 
-struct EmptyStateContentsKey : PreferenceKey {
-    static var defaultValue: AnyView?
+struct EmptyStatePreference : Equatable {
     
-    static func reduce(value: inout AnyView?, nextValue: () -> AnyView?) {
+    var view: AnyView
+    var identifier = UUID() // I don't catch a good way to check equatability. (Reflection?)
+    
+    init(view: AnyView) {
+        self.view = view
+    }
+    
+    init() {
+        self.init(view: AnyView(EmptyView()))
+    }
+    
+    static func == (lhs: EmptyStatePreference, rhs: EmptyStatePreference) -> Bool {
+        lhs.identifier == rhs.identifier
+    }
+
+}
+
+struct EmptyStateContentsKey : PreferenceKey {
+    
+    static var defaultValue: EmptyStatePreference = .init()
+    
+    static func reduce(value: inout EmptyStatePreference, nextValue: () -> EmptyStatePreference) {
         // If multiple keys are set, latest key is used from parent.
         
         /* Possible case example:
@@ -25,5 +45,5 @@ struct EmptyStateContentsKey : PreferenceKey {
         value = nextValue()
     }
     
-    typealias Value = AnyView?
+    typealias Value = EmptyStatePreference
 }
