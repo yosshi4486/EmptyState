@@ -8,36 +8,40 @@
 
 import SwiftUI
 
-public struct EmptyStateView<Content, EmptyContent> : View where Content : View, EmptyContent : View {
+public struct EmptyStateView<Content> : View where Content : View {
     
     private var content: Content
     
-    private var emptyContent: EmptyContent
+    @State
+    private var emptyContent: AnyView
     
     @Binding
     private var empty: Bool
             
-    init(empty: Binding<Bool>, @ViewBuilder content: () -> Content, @ViewBuilder emptyContent: () -> EmptyContent) {
+    init(empty: Binding<Bool>, @ViewBuilder content: () -> Content) {
         self.content = content()
-        self.emptyContent = emptyContent()
+        
+        // Initialized emptyContent from content, Implementation can be simple for several reasons.
+        self._emptyContent = .init(initialValue: self.content.eraseToAnyView())
         self._empty = empty
     }
     
     public var body: some View {
-        if empty {
-            return emptyContent.eraseToAnyView()
-        } else {
-            return content.eraseToAnyView()
+        Group<AnyView> {
+            if empty {
+                return emptyContent
+                    .onPreferenceChange(EmptyStatePreferenceKey.self) { (preference) in
+                        self.emptyContent = preference.view
+                }
+                .eraseToAnyView()
+            } else {
+                return content
+                    .onPreferenceChange(EmptyStatePreferenceKey.self) { (preference) in
+                        self.emptyContent = preference.view
+                }
+                .eraseToAnyView()
+            }
         }
     }
-    
-}
 
-// I think it is not best way but it runs.
-private extension View {
-    
-    func eraseToAnyView() -> AnyView {
-        AnyView(self)
-    }
-    
 }
