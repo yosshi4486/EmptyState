@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+/// A view for presenting empty state items when inner content is empty.
 public struct EmptyStateView<Content> : View where Content : View {
     
     private var content: Content
@@ -42,6 +43,19 @@ public struct EmptyStateView<Content> : View where Content : View {
                 .eraseToAnyView()
             }
         }
+    }
+
+}
+
+extension View {
+    
+    /// Configures the empty state items for the view.
+    ///
+    /// This modifier only takes effect when this view is inside of and visible within a `EmptyStateView`.
+    ///
+    /// - Parameter items: A view that appears when the content is empty.
+    public func emptyStateItems<Items>(@ViewBuilder items: () -> Items) -> some View where Items : View {
+        self.preference(key: EmptyStatePreferenceKey.self, value: .init(view: items().eraseToAnyView()))
     }
 
 }
