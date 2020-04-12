@@ -14,7 +14,7 @@ public struct EmptyStateView<Content> : View where Content : View {
     private var content: Content
     
     @State
-    private var emptyContent: AnyView
+    private var emptyStateItems: AnyView
     
     @Binding
     private var empty: Bool
@@ -23,22 +23,22 @@ public struct EmptyStateView<Content> : View where Content : View {
         self.content = content()
         
         // Initialized emptyContent from content, Implementation can be simple for several reasons.
-        self._emptyContent = .init(initialValue: self.content.eraseToAnyView())
+        self._emptyStateItems = .init(initialValue: self.content.eraseToAnyView())
         self._empty = empty
     }
     
     public var body: some View {
         Group<AnyView> {
             if empty {
-                return emptyContent
+                return emptyStateItems
                     .onPreferenceChange(EmptyStatePreferenceKey.self) { (preference) in
-                        self.emptyContent = preference.view
+                        self.emptyStateItems = preference.view
                 }
                 .eraseToAnyView()
             } else {
                 return content
                     .onPreferenceChange(EmptyStatePreferenceKey.self) { (preference) in
-                        self.emptyContent = preference.view
+                        self.emptyStateItems = preference.view
                 }
                 .eraseToAnyView()
             }
