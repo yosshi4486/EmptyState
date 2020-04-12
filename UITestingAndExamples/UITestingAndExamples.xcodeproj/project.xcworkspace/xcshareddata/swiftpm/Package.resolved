@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "EmptyState",
+        "repositoryURL": "https://github.com/yosshi4486/EmptyState.git",
+        "state": {
+          "branch": "master",
+          "revision": "7e9a43007a49259259ff1f3b1a2b2eb6f200e65e",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
