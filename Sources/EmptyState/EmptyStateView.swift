@@ -19,7 +19,7 @@ public struct EmptyStateView<Content> : View where Content : View {
     @Binding
     private var empty: Bool
             
-    init(empty: Binding<Bool>, @ViewBuilder content: () -> Content) {
+    public init(empty: Binding<Bool>, @ViewBuilder content: () -> Content) {
         self.content = content()
         
         // Initialized emptyContent from content, Implementation can be simple for several reasons.
