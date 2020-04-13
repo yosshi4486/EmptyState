@@ -70,9 +70,10 @@ struct EmptyStateView_Previews: PreviewProvider {
             Text("isNotEmpty")
                 .emptyStateItems {
                     VStack(spacing: 30) {
-                        Image(systemName: "person.3")
-                            .scaleEffect(4)
-                            .padding()
+// Image.init(systemName:) fails on GitHub Actions.
+//                        Image(systemName: "person.3")
+//                            .scaleEffect(4)
+//                            .padding()
                         
                         Text("No mutual friends to show")
                         
