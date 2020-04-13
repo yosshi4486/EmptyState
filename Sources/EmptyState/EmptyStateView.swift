@@ -28,7 +28,9 @@ public struct EmptyStateView<Content> : View where Content : View {
     }
     
     public var body: some View {
-        Group<AnyView> {
+        
+        // I don't know the reason but it goes well with using VStack. It doesn't go well with Group.
+        VStack<AnyView> {
             if empty {
                 return emptyStateItems
                     .onPreferenceChange(EmptyStatePreferenceKey.self) { (preference) in
@@ -58,4 +60,31 @@ extension View {
         self.preference(key: EmptyStatePreferenceKey.self, value: .init(view: items().eraseToAnyView()))
     }
 
+}
+
+struct EmptyStateView_Previews: PreviewProvider {
+    @State static var empty: Bool = true
+    
+    static var previews: some View {
+        EmptyStateView(empty: $empty) {
+            Text("isNotEmpty")
+                .emptyStateItems {
+                    VStack(spacing: 30) {
+                        Image(systemName: "person.3")
+                            .scaleEffect(4)
+                            .padding()
+                        
+                        Text("No mutual friends to show")
+                        
+                        Button(action: {
+                        }) {
+                            Text("FIND FRIENDS")
+                        }
+                        .padding(10)
+                        .border(Color.blue, width: 1)
+                    }
+            }
+        }
+    }
+    
 }
