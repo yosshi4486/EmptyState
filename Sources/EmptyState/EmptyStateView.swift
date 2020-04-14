@@ -29,7 +29,7 @@ public struct EmptyStateView<Content> : View where Content : View {
     
     public var body: some View {
         
-        // I don't know the reason but it goes well with using VStack. It doesn't go well with Group.
+        // I don't know the reason but preview goes well with using VStack. It doesn't go well with Group.
         VStack<AnyView> {
             if empty {
                 return emptyStateItems
